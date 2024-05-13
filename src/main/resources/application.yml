@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: eureka-server
+  config:
+    import: ${config-server}
+  cloud:
+    loadbalancer:
+      enabled: true

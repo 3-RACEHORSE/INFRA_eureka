@@ -68,7 +68,7 @@ jobs:
       - name: Check if container is running
         id: check-container
         run: |
-          if sudo docker ps -a | grep -q config-server; then
+          if sudo docker ps -a | grep -q eureka-server; then
             echo "running=true" >> $GITHUB_OUTPUT
           else
             echo "running=false" >> $GITHUB_OUTPUT

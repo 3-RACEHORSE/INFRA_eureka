@@ -72,7 +72,7 @@ jobs:
         run: sudo docker stop eureka-server
 
       - name: Run new docker container
-        run: sudo docker run -d --name eureka-server --rm -p 8081:8081 --net cheonma-network ${{ secrets.DOCKERHUB_USERNAME }}/eureka-server:latest
+        run: sudo docker run -d --name eureka-server --rm -p 8080:8080 --net cheonma-network ${{ secrets.DOCKERHUB_USERNAME }}/eureka-server:latest
 
       - name: Delete old docker image
         run: sudo docker system prune -f

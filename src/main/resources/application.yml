@@ -2,7 +2,7 @@ spring:
   application:
     name: eureka-server
   config:
-    import: ${config-server}
+    import: optional:configserver:http://43.203.131.185:8071
   cloud:
     loadbalancer:
       enabled: true

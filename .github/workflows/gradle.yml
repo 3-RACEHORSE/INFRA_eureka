@@ -44,7 +44,7 @@ jobs:
         run: ./gradlew build
 
       - name: Build docker image
-        run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/eureka-server -f Dockerfile .
+        run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/eureka-server:latest -f Dockerfile .
 
       - name: login Docker
         uses: docker/login-action@v2
@@ -60,7 +60,7 @@ jobs:
     runs-on: self-hosted
 
     steps:
-      - name: Pull docker
+      - name: Pull image from docker hub
         run: |
           sudo docker login --username ${{ secrets.DOCKERHUB_USERNAME }} --password ${{ secrets.DOCKERHUB_TOKEN }}
           sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/eureka-server:latest
@@ -68,18 +68,18 @@ jobs:
       - name: Check if container is running
         id: check-container
         run: |
-          if sudo docker ps | grep -q eureka-server:latest; then
-            echo "::set-output name=running::true"
+          if sudo docker ps -a | grep -q config-server; then
+            echo "running=true" >> $GITHUB_OUTPUT
           else
-            echo "::set-output name=running::false"
+            echo "running=false" >> $GITHUB_OUTPUT
           fi
 
       - name: Stop and remove container
         if: steps.check-container.outputs.running == 'true'
-        run: sudo docker stop eureka-server:latest
+        run: sudo docker stop eureka-server
 
       - name: Run new docker container
-        run: sudo docker run -d --name eureka-server:latest --rm -p 8080:8080 --net cheonma-network ${{ secrets.DOCKERHUB_USERNAME }}/eureka-server:latest
+        run: sudo docker run -d --name eureka-server --rm -p 8080:8080 --net cheonma-network ${{ secrets.DOCKERHUB_USERNAME }}/eureka-server:latest
 
       - name: Delete old docker image
         run: sudo docker system prune -f

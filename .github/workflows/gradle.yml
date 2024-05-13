@@ -1,4 +1,4 @@
-name: Eureka server CI with gradle
+name: Eureka server CI/CD with gradle
 
 on:
   push:
